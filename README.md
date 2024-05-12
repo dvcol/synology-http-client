@@ -1,2 +1,3 @@
-# typescript-lib-template
-A basic typescript pnpm library template
+# @dvcol/synology-http-client
+
+Simple fetch based http client for the Synology API

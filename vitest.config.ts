@@ -6,5 +6,6 @@ export default defineConfig({
     alias: {
       '~/': new URL('./lib/', import.meta.url).pathname,
     },
+    passWithNoTests: true,
   },
 });

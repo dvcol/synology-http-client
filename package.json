@@ -1,34 +1,49 @@
 {
-  "name": "@dvcol/typescript-lib-template",
+  "name": "@dvcol/synology-http-client",
   "type": "module",
   "version": "1.0.0",
   "packageManager": "pnpm@9.1.0",
-  "description": "<description>",
-  "homepage": "https://github.com/dvcol/typescript-lib-template",
-  "bugs": "https://github.com/dvcol/typescript-lib-template/issues",
+  "description": "Simple fetch based http client for the Synology API",
+  "homepage": "https://github.com/dvcol/synology-http-client",
+  "bugs": "https://github.com/dvcol/synology-http-client/issues",
   "keywords": [
     "typescript",
     "library",
-    "typescript-lib-template"
+    "synology-http-client"
   ],
   "license": "MIT",
   "author": "dvcol",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dvcol/typescript-lib-template.git"
+    "url": "https://github.com/dvcol/synology-http-client.git"
   },
   "engines": {
     "node": ">=20",
     "pnpm": ">= 8"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/clients/index.cjs",
+  "module": "./dist/clients/index.js",
+  "types": "./dist/clients/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/client/index.cjs",
+      "import": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    },
+    "./clients": {
+      "require": "./dist/clients/index.cjs",
+      "import": "./dist/clients/index.js",
+      "types": "./dist/clients/index.d.ts"
+    },
+    "./models": {
+      "require": "./dist/models/index.cjs",
+      "import": "./dist/models/index.js",
+      "types": "./dist/models/index.d.ts"
+    },
+    "./utils": {
+      "require": "./dist/utils/index.cjs",
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
     }
   },
   "files": [
@@ -51,7 +66,10 @@
     "access": "public"
   },
   "peerDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "pretty-bytes": "^6.1.1",
+    "rxjs": "^7.8.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
