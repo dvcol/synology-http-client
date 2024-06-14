@@ -21,4 +21,5 @@ export type HttpResponse<T> = SuccessHttpResponse<T> | FailureHttpResponse<T>;
 
 export enum CustomHeader {
   SynologyDownloadApp = 'synology-download-app',
+  ClientName = 'client-name',
 }

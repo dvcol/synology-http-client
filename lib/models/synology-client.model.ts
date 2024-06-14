@@ -1,0 +1,90 @@
+import { ClientEndpoint } from '@dvcol/base-http-client';
+
+import type {
+  BaseOptions,
+  BaseQuery,
+  BaseRequest,
+  BaseSettings,
+  BaseTemplate,
+  BaseTemplateOptions,
+  ResponseOrTypedResponse,
+} from '@dvcol/base-http-client';
+import type { RecursiveRecord } from '@dvcol/common-utils/common/models';
+import type { HttpError } from '~/models/http-response.model';
+
+import type { Api, Controller } from '~/models/synology.model';
+
+export type SynologyClientSettings = BaseSettings<{
+  /** The base url of the synology server */
+  base: string;
+  /** The client name */
+  name: string;
+  /** To inject session id (_sid) in query or body */
+  sid: boolean;
+  /** To inject csrd token (SynoToken) in query or body */
+  token: boolean;
+}>;
+
+/**
+ * @see [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Os/DSM/All/enu/DSM_Login_Web_API_Guide_enu.pdf}
+ */
+export type SynologyClientAuthentication = {
+  /** An optional session id if cookies are not used (sets _sid in query or body) */
+  sid?: string;
+  /** An optional token (SynoToken) if the server enables Improve protection against cross-site request forgery attacks */
+  token?: string;
+};
+
+export type SynologyApiParam = RecursiveRecord;
+
+export type SynologyErrorPayload = {
+  code: number;
+  errors?: any[];
+};
+
+export type SynologyApiErrorResponse = {
+  success: false;
+  error: HttpError;
+};
+
+export type SynologyApiSuccessResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
+export const isSynologyApiErrorResponse = (response: SynologyApiResolvedResponse): response is SynologyApiErrorResponse => !response.success;
+
+export type SynologyApiResolvedResponse<T = unknown> = SynologyApiSuccessResponse<T> | SynologyApiErrorResponse;
+
+export type SynologyApiResponse<T = unknown> = ResponseOrTypedResponse<SynologyApiResolvedResponse<T>>;
+
+export type SynologyClientOptions = BaseOptions<SynologyClientSettings, SynologyApiResponse>;
+
+export type SynologyApiQuery<T = unknown> = BaseQuery<BaseRequest, T>;
+
+export type SynologyApiTemplateOptions<T extends string | number | symbol = string> = BaseTemplateOptions<T, boolean> & {
+  controller: Controller;
+  version: string;
+  api: Api;
+};
+
+export type SynologyApiTemplate<Parameter extends SynologyApiParam = SynologyApiParam> = BaseTemplate<
+  Parameter,
+  SynologyApiTemplateOptions<keyof Parameter>
+>;
+
+export interface SynologyClientEndpoint<Parameter extends SynologyApiParam = Record<string, never>, Response = unknown> {
+  (param?: Parameter, init?: BodyInit): Promise<SynologyApiResponse<Response>>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export class SynologyClientEndpoint<
+  Parameter extends SynologyApiParam = Record<string, never>,
+  Response = unknown,
+  Cache extends boolean = false,
+> extends ClientEndpoint<Parameter, Response, Cache, SynologyApiTemplateOptions<keyof Parameter>> {}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is a recursive type
+export type ISynologyApi<Parameter extends SynologyApiParam = any, Response = unknown, Cache extends boolean = boolean> = {
+  [key: string]: SynologyClientEndpoint<Parameter, Response, Cache> | ISynologyApi<Parameter>;
+};
