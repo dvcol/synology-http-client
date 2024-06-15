@@ -10,7 +10,8 @@ import type {
   ISynologyApi,
   SynologyApiParam,
   SynologyApiQuery,
-  SynologyApiResolvedResponse,
+  SynologyApiRawResponse,
+  SynologyApiResolvedPayload,
   SynologyApiResponse,
   SynologyApiTemplate,
   SynologyClientAuthentication,
@@ -20,7 +21,7 @@ import type {
 
 import { minimalSynologyApi } from '~/api/synology-api-minimal.endpoint';
 import { AuthMethod, CustomHeader, SynologyError } from '~/models';
-import { isSynologyApiErrorResponse } from '~/models/synology-client.model';
+import { isSynologyApiErrorPayload } from '~/models/synology-client.model';
 
 /** Needed to type Object assignment */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging  -- To allow type extension
@@ -111,7 +112,7 @@ export class BaseSynologyClient
       [BaseApiHeaders.ContentType]: template.body ? BaseHeaderContentType.FormUrlEncoded : BaseHeaderContentType.Json,
     };
 
-    if (this.settings.base) headers[CustomHeader.ClientName] = this.settings.base;
+    if (this.settings.name) headers[CustomHeader.ClientName] = this.settings.name;
 
     return headers;
   }
@@ -132,7 +133,7 @@ export class BaseSynologyClient
    */
   protected _parseUrl<T extends SynologyApiParam = SynologyApiParam>(template: SynologyApiTemplate<T>, params: T): URL {
     injectCorsProxyPrefix(template, this.settings);
-    return parseUrl(template, params, this.settings.endpoint);
+    return parseUrl(template, params, params?.baseUrl ?? this.settings.endpoint);
   }
 
   /**
@@ -170,11 +171,11 @@ export class BaseSynologyClient
     if (!response.ok || response.status >= 400) throw response;
 
     const parsed: SynologyApiResponse = response;
-    const _oldJson = parsed.json as SynologyApiResponse['json'];
+    const _oldJson = parsed.json as SynologyApiRawResponse['json'];
     const _newJson = async () => {
-      const result: SynologyApiResolvedResponse = await _oldJson.bind(parsed)();
-      if (isSynologyApiErrorResponse(result)) {
-        throw new SynologyError(template.opts.api, result?.error);
+      const result: SynologyApiResolvedPayload = await _oldJson.bind(parsed)();
+      if (isSynologyApiErrorPayload(result)) {
+        throw new SynologyError(template.api, result?.error);
       }
       if (result?.success === true) {
         return result.data;
