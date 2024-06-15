@@ -5,8 +5,15 @@ import type { HttpParameters } from '~/models/http-parameters.model';
 import type { TaskFile, TaskType } from '~/models/synology-task.model';
 
 export enum SessionName {
+  SynologyHttpClient = 'SynologyHttpClient',
   DownloadStation = 'DownloadStation',
   FileStation = 'FileStation',
+}
+
+export enum Version {
+  v1 = '1',
+  v2 = '2',
+  v3 = '3',
 }
 
 export enum Controller {
@@ -223,7 +230,13 @@ export interface LoginRequest {
   enable_device_token?: 'yes' | 'no';
   device_name?: string;
   device_id?: string;
+
   format?: 'cookie' | 'sid';
+  session?: string;
+}
+
+export interface LogoutRequest {
+  session?: string;
 }
 
 export enum TaskPriority {
