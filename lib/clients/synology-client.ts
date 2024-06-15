@@ -1,4 +1,4 @@
-import type { LoginRequest } from '~/models';
+import type { SynologyLoginRequest } from '~/models';
 import type { ISynologyApi, SynologyClientAuthentication, SynologyClientOptions } from '~/models/synology-client.model';
 
 import { minimalSynologyApi } from '~/api/synology-api-minimal.endpoint';
@@ -30,12 +30,21 @@ export class SynologyClient extends BaseSynologyClient {
     this.updateAuth(auth);
   }
 
-  async login(request: LoginRequest) {
-    const result = await this.authentication.login(request);
-    return result.json();
+  async login(request: SynologyLoginRequest) {
+    const response = await this.authentication.login(request);
+    const body = await response.json();
+
+    this.updateAuth({ sid: body.sid, token: body.synotoken });
+
+    return body;
   }
 
   async logout(session?: string) {
-    return this.authentication.logout({ session });
+    const response = await this.authentication.logout({ session });
+    const body = await response.json();
+
+    this.updateAuth({});
+
+    return body;
   }
 }

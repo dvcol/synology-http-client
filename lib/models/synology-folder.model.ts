@@ -1,4 +1,85 @@
-import type { File } from '~/models/synology-file.model';
+import type { SynologyPaginationRequest } from '~/models/synology-client.model';
+import type { File, FileListOption } from '~/models/synology-file.model';
+
+export type SynologyListFolderRequest = SynologyPaginationRequest<{
+  /**
+   * - true : List writable shared folders.
+   * - false : List writable and read-only shared folders
+   */
+  onlywritable?: boolean;
+  /** Specify which file information to sort on. Defaults to 'name'. */
+  sort_by?: FolderSortBy;
+  /** Specify to sort ascending or to sort descending. Defaults to 'asc'. */
+  sort_direction?: 'asc' | 'dsc';
+  /**
+   * Additional requested file information separated by a comma "," and surrounded by brackets.
+   * When an additional option is requested, response objects will be provided in dedicated option fields.
+   */
+  additional?: FolderListOption[];
+}>;
+
+export type SynologyCreateFolderRequest = {
+  /**
+   * One or more shared folder paths, separated by commas and around brackets.
+   * If force_parent is "true," and folder_path does not exist, the folder_path will be created.
+   * If force_parent is "false," folder_path must exist or a false value will be returned.
+   * The number of paths must be the same as the number of names in the name parameter.
+   * The first folder_path parameter corresponds to the first name parameter
+   */
+  folder_path: string | string[];
+  /**
+   * One or more new folder names, separated by commas "," and around brackets.
+   * The number of names must be the same as the number of folder paths in the folder_path parameter.
+   * The first name parameter corresponding to the first folder_path parameter.
+   */
+  name: string | string[];
+  /**
+   * Optional.
+   * - true : no error occurs if a folder exists and create parent folders as needed.
+   * - false : parent folders are not created.
+   */
+  force_parent?: boolean;
+  /**
+   * Additional requested file information separated by a comma "," and surrounded by brackets.
+   * When an additional option is requested, response objects will be provided in dedicated option fields.
+   */
+  additional?: FileListOption[];
+};
+
+// @param path  One or more paths of files/folders to be renamed, separated by commas "," and around brackets.
+//   The number of paths must be the same as the number of names in the name parameter.
+//   The first path parameter corresponds to the first name parameter.
+//   @param name  One or more new names, separated by commas "," and around brackets.
+//   The number of names must be the same as the number of folder paths in the path parameter.
+//   The first name parameter corresponding to the first path parameter.
+//   @param search_taskid Optional.
+//   A unique ID for the search task which is obtained from start method.
+//   It is used to update the renamed file in the search result.
+//   @param additional
+export type SynologyRenameFolderRequest = {
+  /**
+   * One or more paths of files/folders to be renamed, separated by commas "," and around brackets.
+   * The number of paths must be the same as the number of names in the name parameter.
+   * The first path parameter corresponds to the first name parameter.
+   */
+  path: string | string[];
+  /**
+   * One or more new names, separated by commas "," and around brackets.
+   * The number of names must be the same as the number of folder paths in the path parameter.
+   * The first name parameter corresponding to the first path parameter.
+   */
+  name: string | string[];
+  /**
+   * A unique ID for the search task which is obtained from start method.
+   * It is used to update the renamed file in the search result.
+   */
+  search_taskid?: string;
+  /**
+   * Additional requested file information separated by a comma "," and surrounded by brackets.
+   * When an additional option is requested, response objects will be provided in dedicated option fields.
+   */
+  additional?: FileListOption[];
+};
 
 export interface FolderList {
   total: number;

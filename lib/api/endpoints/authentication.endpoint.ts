@@ -1,6 +1,6 @@
 import { HttpMethod } from '@dvcol/common-utils';
 
-import type { LoginRequest, LoginResponse, LogoutRequest } from '~/models';
+import type { SynologyLoginRequest, SynologyLoginResponse, SynologyLogoutRequest } from '~/models';
 
 import type { SynologyRequest } from '~/models/synology-client.model';
 
@@ -17,8 +17,11 @@ const authTemplate = {
   opts: { cache: false },
 };
 
+/**
+ * @see [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Os/DSM/All/enu/DSM_Login_Web_API_Guide_enu.pdf}
+ */
 export const authentication = {
-  login: new SynologyClientEndpoint<SynologyRequest<LoginRequest>, LoginResponse, false>({
+  login: new SynologyClientEndpoint<SynologyRequest<SynologyLoginRequest>, SynologyLoginResponse, false>({
     ...authTemplate,
     body: {
       api: true,
@@ -42,7 +45,7 @@ export const authentication = {
       format: 'cookie',
     },
   }),
-  logout: new SynologyClientEndpoint<SynologyRequest<LogoutRequest>, void, false>({
+  logout: new SynologyClientEndpoint<SynologyRequest<SynologyLogoutRequest>, void, false>({
     ...authTemplate,
     body: {
       api: true,

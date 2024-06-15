@@ -1,4 +1,3 @@
-import type { ApiInfo } from './synology-api-info.model';
 import type { HttpBody } from '~/models/http-body.model';
 import type { HttpMethod } from '~/models/http-method.model';
 import type { HttpParameters } from '~/models/http-parameters.model';
@@ -218,27 +217,6 @@ export const ErrorMap: Record<string, Record<number, string>> = {
   ...Object.values(FileStationAPI).reduce((codes, v) => ({ ...codes, [v]: { ...CommonErrorCode, ...FileErrorCode } }), {}),
 };
 
-export interface InfoResponse {
-  [key: string]: ApiInfo;
-}
-
-export interface LoginRequest {
-  account: string;
-  passwd: string;
-  baseUrl?: string;
-  otp_code?: string;
-  enable_device_token?: 'yes' | 'no';
-  device_name?: string;
-  device_id?: string;
-
-  format?: 'cookie' | 'sid';
-  session?: string;
-}
-
-export interface LogoutRequest {
-  session?: string;
-}
-
 export enum TaskPriority {
   low = 'low',
   normal = 'normal',
@@ -293,15 +271,6 @@ export interface TaskFileEditRequest {
 export interface TaskCompleteResponse {
   /** id fo the task end process (e.g. "dev/SYNODLTaskEnd640A245D84136759") */
   task_id: string;
-}
-
-export interface LoginResponse {
-  sid: string;
-  did?: string;
-  device_id?: string;
-  ik_message?: string;
-  is_portal_port?: boolean;
-  synotoken?: string;
 }
 
 export interface CommonResponse {
