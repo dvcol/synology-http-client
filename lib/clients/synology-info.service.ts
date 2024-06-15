@@ -1,6 +1,7 @@
 import type { Observable } from 'rxjs';
 import type { HttpParameters } from '~/models/http-parameters.model';
-import type { InfoResponse } from '~/models/synology.model';
+
+import type { SynologyInfoResponse } from '~/models/synology-information.model';
 
 import { SynologyService } from '~/clients/synology.service';
 import { HttpMethod } from '~/models/http-method.model';
@@ -25,9 +26,9 @@ export class SynologyInfoService extends SynologyService {
     return super.do<T>({ method, params, version, api, endpoint, base: baseUrl });
   }
 
-  info(baseUrl?: string, options: { query?: string[] } = {}): Observable<InfoResponse> {
+  info(baseUrl?: string, options: { query?: string[] } = {}): Observable<SynologyInfoResponse> {
     const { query } = { query: ['ALL'], ...options };
     const params: HttpParameters = { method: InfoMethod.query, query: query?.join(',') };
-    return this._do<InfoResponse>(HttpMethod.POST, params, { baseUrl });
+    return this._do<SynologyInfoResponse>(HttpMethod.POST, params, { baseUrl });
   }
 }

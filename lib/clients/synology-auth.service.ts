@@ -1,6 +1,6 @@
 import type { Observable } from 'rxjs';
 import type { HttpParameters } from '~/models/http-parameters.model';
-import type { LoginRequest, LoginResponse } from '~/models/synology.model';
+import type { SynologyLoginRequest, SynologyLoginResponse } from '~/models/synology-authentication.model';
 
 import { SynologyService } from '~/clients/synology.service';
 import { HttpMethod } from '~/models/http-method.model';
@@ -24,9 +24,9 @@ export class SynologyAuthService extends SynologyService {
   }
 
   login(
-    { account, passwd, baseUrl, otp_code, enable_device_token, device_name, device_id, format }: LoginRequest,
+    { account, passwd, baseUrl, otp_code, enable_device_token, device_name, device_id, format }: SynologyLoginRequest,
     version = '3',
-  ): Observable<LoginResponse> {
+  ): Observable<SynologyLoginResponse> {
     const params: HttpParameters = {
       method: AuthMethod.login,
       session: SessionName.DownloadStation,
@@ -38,7 +38,7 @@ export class SynologyAuthService extends SynologyService {
     if (enable_device_token) params.enable_device_token = enable_device_token;
     if (device_name) params.device_name = device_name;
     if (device_id) params.device_id = device_id;
-    return this._do<LoginResponse>(HttpMethod.POST, params, { baseUrl, version });
+    return this._do<SynologyLoginResponse>(HttpMethod.POST, params, { baseUrl, version });
   }
 
   logout(): Observable<void> {

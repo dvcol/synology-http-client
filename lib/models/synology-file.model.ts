@@ -1,4 +1,46 @@
+import type { SynologyPaginationRequest } from '~/models/synology-client.model';
+
 import type { FolderAcl, FolderOwner, FolderTime } from '~/models/synology-folder.model';
+
+export type SynologyListFileRequest = SynologyPaginationRequest<{
+  /** A listed folder path starting with a shared folder */
+  folder_path: string;
+  /**
+   * Optional.
+   *
+   * "file": only enumerate regular files;
+   * "dir": only enumerate folders;
+   * "all": enumerate regular files and folders.
+   */
+  filetype?: 'file' | 'dir' | 'all';
+  /** Specify which file information to sort on. Defaults to 'name'. */
+  sort_by?: FileSortBy;
+  /** Specify to sort ascending or to sort descending. Defaults to 'asc'. */
+  sort_direction?: 'asc' | 'dsc';
+  /**
+   * Optional.
+   *
+   * Given glob pattern(s) to find files whose names and extensions match a case-insensitive glob pattern.
+   *
+   * Note:
+   * 1. If the pattern doesn't contain any glob syntax (? and *), * of glob syntax will be added at begin and end of the string automatically for partially matching the pattern.
+   * 2. You can use "," to separate multiple glob patterns.**
+   */
+  pattern?: string;
+  /**
+   * Optional.
+   *
+   * Folder path starting with a shared folder. Return all iles and sub-folders within folder_path path until goto_path path recursively.
+   *
+   * Note: goto_path is only valid with parameter "additional" contains real_path.
+   */
+  goto_path?: string;
+  /**
+   * Additional requested file information separated by a comma "," and surrounded by brackets.
+   * When an additional option is requested, response objects will be provided in the specified option fields.
+   */
+  additional?: FileListOption[];
+}>;
 
 export interface FileList {
   total: number;

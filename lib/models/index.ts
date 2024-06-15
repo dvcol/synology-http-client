@@ -12,3 +12,7 @@ export * from './synology-error.model';
 export * from './synology-file.model';
 export * from './synology-folder.model';
 export * from './synology-task.model';
+export { SynologyLogoutRequest } from '~/models/synology-authentication.model';
+export { SynologyLoginRequest } from '~/models/synology-authentication.model';
+export { SynologyLoginResponse } from '~/models/synology-authentication.model';
+export { SynologyInfoResponse } from '~/models/synology-information.model';

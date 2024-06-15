@@ -56,7 +56,7 @@ export class SynologyFileService extends SynologyService {
     goto_path?: string,
   ): Observable<FileList> {
     const params: HttpParameters = { method: FileMethod.list, folder_path };
-    if (offset) if (offset) params.offset = `${offset}`;
+    if (offset) params.offset = `${offset}`;
     if (limit) params.limit = `${limit}`;
     if (sort_by) params.sort_by = `${sort_by}`;
     if (sort_direction) params.sort_direction = `${sort_direction}`;
