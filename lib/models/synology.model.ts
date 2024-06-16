@@ -1,7 +1,6 @@
 import type { HttpBody } from '~/models/http-body.model';
 import type { HttpMethod } from '~/models/http-method.model';
 import type { HttpParameters } from '~/models/http-parameters.model';
-import type { TaskFile, TaskType } from '~/models/synology-task.model';
 
 export enum SessionName {
   SynologyHttpClient = 'SynologyHttpClient',
@@ -217,144 +216,9 @@ export const ErrorMap: Record<string, Record<number, string>> = {
   ...Object.values(FileStationAPI).reduce((codes, v) => ({ ...codes, [v]: { ...CommonErrorCode, ...FileErrorCode } }), {}),
 };
 
-export enum TaskPriority {
-  low = 'low',
-  normal = 'normal',
-  high = 'high',
-}
-
-export interface TaskEditResponse {
-  extract_password: string;
-  is_active_torrent: boolean;
-
-  priority: TaskPriority;
-
-  destination: string;
-
-  max_peers: number;
-  max_download_rate: number;
-  max_upload_rate: number;
-
-  seeding_interval: number;
-  seeding_ratio: number;
-}
-
-export interface TaskEditRequest {
-  id: string[];
-  destination?: string;
-}
-
-export interface TaskBtEditRequest {
-  task_id: string;
-
-  destination?: string;
-
-  priority?: TaskPriority;
-
-  max_peers?: number;
-  max_download_rate?: number;
-  max_upload_rate?: number;
-
-  seeding_ratio?: number;
-  seeding_interval?: number;
-
-  'ext-comp-1522'?: string;
-}
-
-export interface TaskFileEditRequest {
-  task_id: string;
-  index: number[];
-  wanted?: boolean;
-  priority?: TaskPriority;
-}
-
-export interface TaskCompleteResponse {
-  /** id fo the task end process (e.g. "dev/SYNODLTaskEnd640A245D84136759") */
-  task_id: string;
-}
-
-export interface CommonResponse {
+export interface SynologyCommonResponse {
   error: number;
   id: string;
-}
-
-export enum TaskCreateType {
-  url = 'url',
-  file = 'file',
-}
-
-export interface TaskCreateRequest {
-  type: TaskCreateType;
-
-  /** required, empty string means default folder */
-  destination: string;
-  username?: string;
-  password?: string;
-  extract_password?: string;
-  url?: string[];
-
-  file?: string[];
-  /** epoch timestamp */
-  mtime?: number;
-  size?: number;
-  torrent?: Blob;
-  /** to prompt for file selection after creation or not */
-  create_list: boolean;
-}
-
-export interface TaskCreateResponse {
-  list_id: string[];
-  task_id: string[];
-}
-
-export interface TaskListFile {
-  index: number;
-  name: string;
-  size: number;
-}
-
-export interface TaskListResponse {
-  size: number;
-  title: string;
-  type: TaskType;
-  files: TaskListFile[];
-}
-
-export interface TaskListDownloadRequest {
-  list_id: string;
-  selected: number[];
-  destination?: string;
-  create_subfolder?: boolean;
-}
-
-export interface TaskListDownloadResponse {
-  /** id fo the task create process (e.g. "dev/SYNODLTaskListDownload640BB11B252329B4") */
-  task_id: string;
-}
-
-export interface TaskListDeleteRequestCompound {
-  api: Api;
-  method: SynologyMethod;
-  version: string;
-  list_id: string;
-}
-
-export interface TaskListDeleteRequest {
-  stop_when_error: boolean;
-  mode: 'sequential';
-  compound: TaskListDeleteRequestCompound[];
-}
-
-export interface TaskListDeleteResponseResult {
-  api: Api;
-  method: SynologyMethod;
-  version: string;
-  success: true;
-}
-
-export interface TaskListDeleteResponse {
-  has_fail: boolean;
-  result: TaskListDeleteResponseResult[];
 }
 
 export enum Order {
@@ -362,43 +226,7 @@ export enum Order {
   DESC = 'DESC',
 }
 
-export enum TaskQuerySortBy {
-  filename = 'filename',
-  total_size = 'total_size',
-  current_size = 'current_size',
-  progress = 'progress',
-  upload_rate = 'upload_rate',
-  current_rate = 'current_rate',
-  status = 'status',
-  destination = 'destination',
-}
-
-export interface TaskQueryRequest {
-  sort_by: TaskQuerySortBy;
-}
-
-export enum TaskListFilesOrderBy {
-  name = 'name',
-  size = 'size',
-  size_downloaded = 'size_downloaded',
-  progress = 'progress',
-  priority = 'priority',
-}
-
-export interface TaskListFilesRequest {
-  task_id: string;
-  offset: number;
-  limit: number;
-  order_by: TaskListFilesOrderBy;
-  order: 'ASC' | 'DESC';
-  query?: string;
-}
-
-export interface TaskListFilesResponse {
-  items: TaskFile[];
-}
-
-export type SynologyQueryOptions = {
+export type SynologySynologyQueryOptions = {
   api: Api;
   endpoint: Endpoint;
   method: HttpMethod;
@@ -408,4 +236,4 @@ export type SynologyQueryOptions = {
   base?: string;
 };
 
-export type SynologyQueryArgs = [SynologyQueryOptions];
+export type SynologyQueryArgs = [SynologySynologyQueryOptions];

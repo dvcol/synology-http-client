@@ -92,8 +92,8 @@ export class BaseSynologyClient
       }
     }
 
-    if (params?.api) params.api = template.api;
-    if (params?.version) params.version = template.version;
+    if (!params?.api) params.api = template.api;
+    if (!params?.version) params.version = template.version;
 
     return { template, params, init };
   }

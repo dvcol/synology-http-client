@@ -1,29 +1,29 @@
 import { throwError } from 'rxjs';
 
 import type { Observable } from 'rxjs';
-import type { HttpParameters } from '~/models/http-parameters.model';
 import type {
-  CommonResponse,
-  SynologyQueryOptions,
-  TaskBtEditRequest,
-  TaskCompleteResponse,
-  TaskCreateRequest,
-  TaskCreateResponse,
-  TaskEditRequest,
-  TaskEditResponse,
-  TaskFileEditRequest,
-  TaskListDeleteRequest,
-  TaskListDeleteResponse,
-  TaskListDownloadRequest,
-  TaskListDownloadResponse,
-  TaskListFilesRequest,
-  TaskListFilesResponse,
-  TaskListResponse,
-} from '~/models/synology.model';
+  SynologyTaskBtEditRequest,
+  SynologyTaskCompleteResponse,
+  SynologyTaskCreateRequest,
+  SynologyTaskCreateResponse,
+  SynologyTaskEditRequest,
+  SynologyTaskEditResponse,
+  SynologyTaskFileEditRequest,
+  SynologyTaskListDeleteRequest,
+  SynologyTaskListDeleteResponse,
+  SynologyTaskListDownloadRequest,
+  SynologyTaskListDownloadResponse,
+  SynologyTaskListFilesRequest,
+  SynologyTaskListFilesResponse,
+  SynologyTaskListResponse,
+} from '~/models';
+import type { HttpParameters } from '~/models/http-parameters.model';
+import type { SynologyCommonResponse, SynologySynologyQueryOptions } from '~/models/synology.model';
 
 import { SynologyService } from '~/clients/synology.service';
 import { HttpMethod } from '~/models/http-method.model';
 import { DownloadStation2API, Endpoint, EntryAPI, EntryMethod, Task2Method } from '~/models/synology.model';
+
 import { buildFormData, stringifyKeys } from '~/utils/string.utils';
 
 export class SynologyDownload2Service extends SynologyService {
@@ -46,7 +46,7 @@ export class SynologyDownload2Service extends SynologyService {
     super(name);
   }
 
-  _do<T>({ method, params, body, version, api, endpoint, base }: Partial<SynologyQueryOptions> & { method: HttpMethod }): Observable<T> {
+  _do<T>({ method, params, body, version, api, endpoint, base }: Partial<SynologySynologyQueryOptions> & { method: HttpMethod }): Observable<T> {
     return super.do<T>({
       api: api ?? DownloadStation2API.Task,
       method,
@@ -58,13 +58,13 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  createTask(request: TaskCreateRequest): Observable<TaskCreateResponse> {
+  createTask(request: SynologyTaskCreateRequest): Observable<SynologyTaskCreateResponse> {
     try {
       const { url, file, torrent, ..._request } = request;
       const params: HttpParameters = stringifyKeys(_request, true);
       if (url?.length) params.url = JSON.stringify(url?.map(_url => SynologyDownload2Service._sanitizeUrl(_url).toString()));
 
-      const options: SynologyQueryOptions = {
+      const options: SynologySynologyQueryOptions = {
         api: DownloadStation2API.Task,
         method: HttpMethod.POST,
         version: '2',
@@ -88,14 +88,14 @@ export class SynologyDownload2Service extends SynologyService {
         };
       }
 
-      return this._do<TaskCreateResponse>(options);
+      return this._do<SynologyTaskCreateResponse>(options);
     } catch (error) {
       return throwError(error);
     }
   }
 
-  getTaskFiles(request: TaskListFilesRequest): Observable<TaskListFilesResponse> {
-    return this._do<TaskListFilesResponse>({
+  getTaskFiles(request: SynologyTaskListFilesRequest): Observable<SynologyTaskListFilesResponse> {
+    return this._do<SynologyTaskListFilesResponse>({
       api: DownloadStation2API.TaskBtFile,
       method: HttpMethod.POST,
       version: '2',
@@ -106,8 +106,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  getTaskList(list_id: string): Observable<TaskListResponse> {
-    return this._do<TaskListResponse>({
+  getTaskList(list_id: string): Observable<SynologyTaskListResponse> {
+    return this._do<SynologyTaskListResponse>({
       api: DownloadStation2API.TaskList,
       method: HttpMethod.POST,
       version: '2',
@@ -118,8 +118,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  setTaskListDownload(request: TaskListDownloadRequest): Observable<TaskListDownloadResponse> {
-    return this._do<TaskListDownloadResponse>({
+  setTaskListDownload(request: SynologyTaskListDownloadRequest): Observable<SynologyTaskListDownloadResponse> {
+    return this._do<SynologyTaskListDownloadResponse>({
       api: DownloadStation2API.TaskListPolling,
       method: HttpMethod.POST,
       version: '2',
@@ -130,8 +130,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  deleteTaskList(list_id: string): Observable<TaskListDeleteResponse> {
-    const request: TaskListDeleteRequest = {
+  deleteTaskList(list_id: string): Observable<SynologyTaskListDeleteResponse> {
+    const request: SynologyTaskListDeleteRequest = {
       mode: 'sequential',
       stop_when_error: false,
       compound: [
@@ -143,7 +143,7 @@ export class SynologyDownload2Service extends SynologyService {
         },
       ],
     };
-    return this._do<TaskListDeleteResponse>({
+    return this._do<SynologyTaskListDeleteResponse>({
       api: EntryAPI.request,
       method: HttpMethod.POST,
       version: '1',
@@ -155,8 +155,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  stopTask(id: string | string[]): Observable<TaskCompleteResponse> {
-    return this._do<TaskCompleteResponse>({
+  stopTask(id: string | string[]): Observable<SynologyTaskCompleteResponse> {
+    return this._do<SynologyTaskCompleteResponse>({
       api: DownloadStation2API.TaskComplete,
       method: HttpMethod.POST,
       version: '1',
@@ -167,8 +167,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  getTaskEdit(task_id: string): Observable<TaskEditResponse> {
-    return this._do<TaskEditResponse>({
+  getTaskEdit(task_id: string): Observable<SynologyTaskEditResponse> {
+    return this._do<SynologyTaskEditResponse>({
       api: DownloadStation2API.TaskBt,
       method: HttpMethod.POST,
       version: '2',
@@ -179,8 +179,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  editTask(request: TaskEditRequest): Observable<CommonResponse[]> {
-    return this._do<CommonResponse[]>({
+  editTask(request: SynologyTaskEditRequest): Observable<SynologyCommonResponse[]> {
+    return this._do<SynologyCommonResponse[]>({
       api: DownloadStation2API.Task,
       method: HttpMethod.POST,
       version: '2',
@@ -191,8 +191,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  editTaskBt(request: TaskBtEditRequest): Observable<CommonResponse[]> {
-    return this._do<CommonResponse[]>({
+  editTaskBt(request: SynologyTaskBtEditRequest): Observable<SynologyCommonResponse[]> {
+    return this._do<SynologyCommonResponse[]>({
       api: DownloadStation2API.TaskBt,
       method: HttpMethod.POST,
       version: '2',
@@ -203,8 +203,8 @@ export class SynologyDownload2Service extends SynologyService {
     });
   }
 
-  editFile(request: TaskFileEditRequest): Observable<CommonResponse[]> {
-    return this._do<CommonResponse[]>({
+  editFile(request: SynologyTaskFileEditRequest): Observable<SynologyCommonResponse[]> {
+    return this._do<SynologyCommonResponse[]>({
       api: DownloadStation2API.TaskBtFile,
       method: HttpMethod.POST,
       version: '2',

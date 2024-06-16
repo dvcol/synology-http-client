@@ -4,7 +4,7 @@ import { SynologyClient } from './synology-client';
 
 describe('synology-client.ts', () => {
   const client = new SynologyClient({
-    endpoint: 'http://localhost:5000',
+    endpoint: 'http://diskstation:5000',
     token: false,
     sid: false,
     name: 'SynologyClientTest',
