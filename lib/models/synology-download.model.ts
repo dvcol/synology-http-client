@@ -1,4 +1,4 @@
-export interface DownloadStationConfig {
+export interface SynologyDownloadStationConfig {
   /** Max BT download speed in KB/s (“0” means unlimited) */
   bt_max_download: number;
   /** Max BT upload speed in KB/s (“0” means unlimited) */
@@ -41,7 +41,7 @@ export interface DownloadStationConfig {
   emule_default_destination: string;
 }
 
-export const defaultConfig: DownloadStationConfig = {
+export const defaultConfig: SynologyDownloadStationConfig = {
   bt_max_download: 0,
   bt_max_upload: 0,
   emule_max_download: 0,
@@ -55,7 +55,7 @@ export const defaultConfig: DownloadStationConfig = {
   emule_default_destination: '',
 };
 
-export interface DownloadStationInfo {
+export interface SynologyDownloadStationInfo {
   /** Build number of Download Station 1 and later */
   version: number;
   /** Full version string of Download Station 1 and later */
@@ -64,7 +64,7 @@ export interface DownloadStationInfo {
   is_manager: boolean;
 }
 
-export interface DownloadStationStatistic {
+export interface SynologyDownloadStationStatistic {
   /** Total download speed except for eMule: byte/s 1 and later */
   speed_download: number;
   /**  Total upload speed except for eMule: byte/s 1 and later */

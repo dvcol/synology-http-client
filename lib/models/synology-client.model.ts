@@ -37,7 +37,7 @@ export type SynologyClientAuthentication = {
 
 export type SynologyApiParam = SynologyRequest<RecursiveRecord>;
 
-export type SynologyRequest<T extends RecursiveRecord = Record<string, never>> = T & {
+type BaseSynologyRequest = {
   /** The endpoint api path */
   api?: Api;
   /** The api version */
@@ -47,6 +47,9 @@ export type SynologyRequest<T extends RecursiveRecord = Record<string, never>> =
   /** The server origin if it differs from the default */
   baseUrl?: string;
 };
+
+export type SynologyRequest<T extends RecursiveRecord = Record<string, never>> =
+  T extends Record<string, never> ? BaseSynologyRequest : BaseSynologyRequest & T;
 
 export type SynologyPaginationRequest<T = Record<string, never>> = T & {
   /** Specify how many shared folders are skipped before beginning to return listed shared folders. Defaults to 0. */

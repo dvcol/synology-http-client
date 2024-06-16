@@ -5,3 +5,6 @@ export * from './synology-download.service';
 export * from './synology-download2.service';
 export * from './synology-file.service';
 export * from './synology-info.service';
+
+export * from './base-synology-client';
+export * from './synology-client';

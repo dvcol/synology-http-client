@@ -1,8 +1,8 @@
-import type { Task, TaskComplete } from '~/models/synology-task.model';
+import type { SynologyTask, SynologyTaskComplete } from '~/models/synology-task.model';
 
 import { computeProgress, formatTime } from '~/utils/format.utils';
 
-export interface ParsedTask extends Task {
+export interface ParsedTask extends SynologyTask {
   folder?: string;
   progress?: number;
   speed?: number;
@@ -13,7 +13,7 @@ export interface ParsedTask extends Task {
   stopping?: boolean;
 }
 
-const computeEta = (task: Task): string | undefined => {
+const computeEta = (task: SynologyTask): string | undefined => {
   const downloaded = Number(task.additional?.transfer?.size_downloaded);
   const speed = Number(task.additional?.transfer?.speed_download);
   if (downloaded && Number.isFinite(downloaded) && speed && Number.isFinite(speed)) {
@@ -23,7 +23,7 @@ const computeEta = (task: Task): string | undefined => {
   return undefined;
 };
 
-export const mapToTask = (task: Task, stoppingIds: TaskComplete['taskId'][] = []): ParsedTask => {
+export const mapToTask = (task: SynologyTask, stoppingIds: SynologyTaskComplete['taskId'][] = []): ParsedTask => {
   const folder = task.additional?.detail?.destination ?? undefined;
   const received = task.additional?.transfer?.size_downloaded ?? 0;
   const speed = task.additional?.transfer?.speed_download ?? undefined;

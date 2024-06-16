@@ -8,10 +8,10 @@ import type { BaseHttpRequest } from '~/models/base-http-request.model';
 import type { HttpHeaders } from '~/models/http-headers.model';
 
 import type { HttpResponse } from '~/models/http-response.model';
-import type { SynologyQueryOptions } from '~/models/synology.model';
+
+import type { SynologySynologyQueryOptions } from '~/models/synology.model';
 
 import { HttpMethod } from '~/models/http-method.model';
-
 import { CustomHeader } from '~/models/http-response.model';
 import { SynologyError } from '~/models/synology-error.model';
 import { AuthMethod, Controller } from '~/models/synology.model';
@@ -35,7 +35,7 @@ export class SynologyService extends BaseHttpService {
     this.sid = sid;
   }
 
-  query<T>({ method: httpMethod, params, body: httpBody, version, api, endpoint, base }: SynologyQueryOptions): Observable<HttpResponse<T>> {
+  query<T>({ method: httpMethod, params, body: httpBody, version, api, endpoint, base }: SynologySynologyQueryOptions): Observable<HttpResponse<T>> {
     const { method, ..._params } = params ?? {};
     let url: BaseHttpRequest['url'] = endpoint;
 
@@ -64,7 +64,7 @@ export class SynologyService extends BaseHttpService {
     }
   }
 
-  do<T>(options: SynologyQueryOptions): Observable<T> {
+  do<T>(options: SynologySynologyQueryOptions): Observable<T> {
     return this.query<T>(options).pipe(
       map(response => {
         if (response?.success === true) {
