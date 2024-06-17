@@ -1,23 +1,22 @@
 import { HttpMethod } from '@dvcol/common-utils';
 
+import type { SynologyListFileRequest } from '~/models/synology-file.model';
 import type {
-  FileList,
   FolderList,
   NewFolderList,
   SynologyCreateFolderRequest,
-  SynologyListFileRequest,
   SynologyListFolderRequest,
   SynologyRenameFolderRequest,
-} from '~/models';
-
-import { Controller, Endpoint, FileMethod, FileStationAPI, Version } from '~/models';
+} from '~/models/synology-folder.model';
 
 import { SynologyClientEndpoint, type SynologyRequest } from '~/models/synology-client.model';
+import { Controller, Endpoint, FileMethod, FileStationAPI, Version } from '~/models/synology.model';
+import { baseBodyValidation, basePaginationValidation } from '~/utils/endpoint.utils';
 
 /**
  * @link [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Package/FileStation/All/enu/Synology_File_Station_API_Guide.pdf}
  */
-export const fileStation = {
+export const file = {
   file: {
     list: new SynologyClientEndpoint<SynologyRequest<SynologyListFileRequest>, FileList>({
       controller: Controller.Common,
@@ -26,12 +25,8 @@ export const fileStation = {
       version: Version.v2,
       method: HttpMethod.POST,
       body: {
-        api: true,
-        version: true,
-        method: true,
-
-        offset: false,
-        limit: false,
+        ...baseBodyValidation,
+        ...basePaginationValidation,
 
         folder_path: true,
         filetype: false,
@@ -54,12 +49,8 @@ export const fileStation = {
       version: Version.v2,
       method: HttpMethod.POST,
       body: {
-        api: true,
-        version: true,
-        method: true,
-
-        offset: false,
-        limit: false,
+        ...baseBodyValidation,
+        ...basePaginationValidation,
 
         onlywritable: false,
         sort_by: false,
@@ -80,9 +71,7 @@ export const fileStation = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         folder_path: true,
         name: true,
@@ -114,9 +103,7 @@ export const fileStation = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         path: true,
         name: true,

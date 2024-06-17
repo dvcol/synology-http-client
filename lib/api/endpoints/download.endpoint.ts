@@ -1,25 +1,23 @@
 import { HttpMethod } from '@dvcol/common-utils';
 
+import type { SynologyRequest } from '~/models/synology-client.model';
+
+import type { SynologyDownloadStationConfig, SynologyDownloadStationInfo, SynologyDownloadStationStatistic } from '~/models/synology-download.model';
 import type {
-  SynologyCommonResponse,
-  SynologyDownloadStationConfig,
-  SynologyDownloadStationInfo,
-  SynologyDownloadStationStatistic,
   SynologyTaskCommonRequest,
   SynologyTaskCreateRequestV1,
   SynologyTaskDeleteRequestV1,
   SynologyTaskEditRequest,
   SynologyTaskList,
   SynologyTaskListRequest,
-} from '~/models';
+} from '~/models/synology-task.model';
 
-import type { SynologyRequest } from '~/models/synology-client.model';
-
-import { Controller, DownloadStationAPI, Endpoint, TaskMethod, Version } from '~/models';
+import type { SynologyCommonResponse } from '~/models/synology.model';
 
 import { SynologyClientEndpoint } from '~/models/synology-client.model';
-
-const sanitizeUrl = (url: string): URL => new URL(url.toString().replace(/,/g, '%2C'));
+import { Controller, DownloadStationAPI, Endpoint, TaskMethod, Version } from '~/models/synology.model';
+import { baseBodyValidation, basePaginationValidation } from '~/utils/endpoint.utils';
+import { sanitizeUrl } from '~/utils/string.utils';
 
 const infoTemplate = {
   controller: Controller.DownloadStation,
@@ -39,22 +37,14 @@ export const download = {
   config: {
     get: new SynologyClientEndpoint<SynologyRequest, SynologyDownloadStationConfig>({
       ...infoTemplate,
-      body: {
-        api: true,
-        version: true,
-        method: true,
-      },
+      body: baseBodyValidation,
       seed: {
         method: TaskMethod.getConfig,
       },
     }),
     set: new SynologyClientEndpoint<SynologyRequest<SynologyDownloadStationConfig>, SynologyCommonResponse>({
       ...infoTemplate,
-      body: {
-        api: true,
-        version: true,
-        method: true,
-      },
+      body: baseBodyValidation,
       seed: {
         method: TaskMethod.setConfig,
       },
@@ -62,11 +52,7 @@ export const download = {
   },
   info: new SynologyClientEndpoint<SynologyRequest, SynologyDownloadStationInfo>({
     ...infoTemplate,
-    body: {
-      api: true,
-      version: true,
-      method: true,
-    },
+    body: baseBodyValidation,
     seed: {
       method: TaskMethod.getInfo,
     },
@@ -77,11 +63,7 @@ export const download = {
     url: Endpoint.Statistic,
     version: Version.v1,
     method: HttpMethod.POST,
-    body: {
-      api: true,
-      version: true,
-      method: true,
-    },
+    body: baseBodyValidation,
     seed: {
       method: TaskMethod.getInfo,
     },
@@ -92,12 +74,9 @@ export const download = {
       version: Version.v1,
       method: HttpMethod.POST,
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
+        ...basePaginationValidation,
 
-        offset: false,
-        limit: false,
         additional: false,
       },
       seed: {
@@ -112,9 +91,7 @@ export const download = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         uri: false,
         file: false,
@@ -149,9 +126,7 @@ export const download = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         id: true,
         force_complete: false,
@@ -169,9 +144,7 @@ export const download = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         id: true,
       },
@@ -187,9 +160,7 @@ export const download = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         id: true,
       },
@@ -205,9 +176,7 @@ export const download = {
         cache: false,
       },
       body: {
-        api: true,
-        version: true,
-        method: true,
+        ...baseBodyValidation,
 
         id: true,
         destination: true,

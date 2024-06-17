@@ -1,7 +1,13 @@
 import type { SynologyPaginationRequest } from '~/models/synology-client.model';
 
-import type { Api, SynologyMethod } from '~/models/synology.model';
+import type { Api, Order, SynologyMethod } from '~/models/synology.model';
 
+/**
+ * Note: When setting a limit, “-1” means to list all tasks.
+ * Default to “-1”
+ *
+ * @link [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Package/DownloadStation/All/enu/Synology_Download_Station_Web_API.pdf}
+ */
 export type SynologyTaskListRequest = SynologyPaginationRequest<{
   /** Additional requested info, separated by ",". When an additional option is requested, objects will be provided in the specified additional option. */
   additional?: SynologyTaskListOption[];
@@ -27,7 +33,7 @@ export type SynologyTaskDeleteRequestV1 = SynologyTaskCommonRequest & {
   force_complete?: boolean;
 };
 
-export type SynologyTaskEditResponse = {
+export type SynologyTaskBtResponse = {
   extract_password: string;
   is_active_torrent: boolean;
 
@@ -89,9 +95,9 @@ export type SynologyTaskCreateRequest = {
   username?: string;
   password?: string;
   extract_password?: string;
-  url?: string[];
+  url?: string | string[];
 
-  file?: string[];
+  file?: string | string[];
   /** epoch timestamp */
   mtime?: number;
   size?: number;
@@ -138,9 +144,10 @@ export type SynologyTaskListDeleteRequestCompound = {
 };
 
 export type SynologyTaskListDeleteRequest = {
-  stop_when_error: boolean;
-  mode: 'sequential';
-  compound: SynologyTaskListDeleteRequestCompound[];
+  list_id: string;
+  stop_when_error?: boolean;
+  mode?: 'sequential';
+  compound?: string | SynologyTaskListDeleteRequestCompound[];
 };
 
 export type SynologyTaskListDeleteResponseResult = {
@@ -178,14 +185,12 @@ export enum TaskListFilesOrderBy {
   priority = 'priority',
 }
 
-export type SynologyTaskListFilesRequest = {
+export type SynologyTaskListFilesRequest = SynologyPaginationRequest<{
   task_id: string;
-  offset: number;
-  limit: number;
-  order_by: TaskListFilesOrderBy;
-  order: 'ASC' | 'DESC';
+  order_by?: TaskListFilesOrderBy;
+  order?: Order;
   query?: string;
-};
+}>;
 
 export type SynologyTaskListFilesResponse = {
   items: SynologyTaskFile[];

@@ -1,12 +1,13 @@
 import { HttpMethod } from '@dvcol/common-utils';
 
-import type { SynologyLoginRequest, SynologyLoginResponse, SynologyLogoutRequest } from '~/models';
+import type { SynologyLoginRequest, SynologyLoginResponse, SynologyLogoutRequest } from '~/models/synology-authentication.model';
 
 import type { SynologyRequest } from '~/models/synology-client.model';
 
-import { AuthMethod, CommonAPI, Controller, Endpoint, SessionName, Version } from '~/models';
-
 import { SynologyClientEndpoint } from '~/models/synology-client.model';
+
+import { AuthMethod, CommonAPI, Controller, Endpoint, SessionName, Version } from '~/models/synology.model';
+import { baseBodyValidation } from '~/utils/endpoint.utils';
 
 const authTemplate = {
   controller: Controller.Common,
@@ -24,9 +25,7 @@ export const authentication = {
   login: new SynologyClientEndpoint<SynologyRequest<SynologyLoginRequest>, SynologyLoginResponse, false>({
     ...authTemplate,
     body: {
-      api: true,
-      version: true,
-      method: true,
+      ...baseBodyValidation,
 
       account: true,
       passwd: true,
@@ -48,9 +47,7 @@ export const authentication = {
   logout: new SynologyClientEndpoint<SynologyRequest<SynologyLogoutRequest>, void, false>({
     ...authTemplate,
     body: {
-      api: true,
-      version: true,
-      method: true,
+      ...baseBodyValidation,
 
       session: true,
     },

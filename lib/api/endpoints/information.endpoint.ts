@@ -2,10 +2,12 @@ import { HttpMethod } from '@dvcol/common-utils';
 
 import type { SynologyRequest } from '~/models/synology-client.model';
 
-import type { SynologyInfoRequest } from '~/models/synology-information.model';
+import type { SynologyInfoRequest, SynologyInfoResponse } from '~/models/synology-information.model';
 
-import { CommonAPI, Controller, Endpoint, InfoMethod, type SynologyInfoResponse, Version } from '~/models';
 import { SynologyClientEndpoint } from '~/models/synology-client.model';
+
+import { CommonAPI, Controller, Endpoint, InfoMethod, Version } from '~/models/synology.model';
+import { baseBodyValidation } from '~/utils/endpoint.utils';
 
 export const information = {
   info: new SynologyClientEndpoint<SynologyRequest<SynologyInfoRequest>, SynologyInfoResponse>({
@@ -15,9 +17,7 @@ export const information = {
     version: Version.v1,
     method: HttpMethod.POST,
     body: {
-      api: true,
-      version: true,
-      method: true,
+      ...baseBodyValidation,
 
       query: false,
     },
