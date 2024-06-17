@@ -20,8 +20,11 @@ import type {
 } from '~/models/synology-client.model';
 
 import { minimalSynologyApi } from '~/api/synology-api-minimal.endpoint';
-import { AuthMethod, CustomHeader, SynologyError } from '~/models';
 import { isSynologyApiErrorPayload } from '~/models/synology-client.model';
+
+import { SynologyError } from '~/models/synology-error.model';
+import { AuthMethod } from '~/models/synology.model';
+import { CustomHeader } from '~/utils/endpoint.utils';
 
 /** Needed to type Object assignment */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging  -- To allow type extension
@@ -70,23 +73,23 @@ export class BaseSynologyClient
       if (this.settings.sid && this.auth.sid) {
         params._sid = this.auth.sid;
         if ([HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].map(String).includes(template.method)) {
-          template.body = { ...template.body, _sid: this.auth.sid };
+          template.body = { ...template.body, _sid: true };
         } else {
           template.opts = {
             ...template.opts,
-            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, _sid: this.auth.sid } },
+            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, _sid: true } },
           };
         }
       }
 
       if (this.settings.token && this.auth.token) {
-        params._synotoken = this.auth.token;
+        params.SynoToken = this.auth.token;
         if ([HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].map(String).includes(template.method)) {
-          template.body = { ...template.body, SynoToken: this.auth.token };
+          template.body = { ...template.body, SynoToken: true };
         } else {
           template.opts = {
             ...template.opts,
-            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, SynoToken: this.auth.token } },
+            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, SynoToken: true } },
           };
         }
       }

@@ -41,20 +41,6 @@ export interface SynologyDownloadStationConfig {
   emule_default_destination: string;
 }
 
-export const defaultConfig: SynologyDownloadStationConfig = {
-  bt_max_download: 0,
-  bt_max_upload: 0,
-  emule_max_download: 0,
-  emule_max_upload: 0,
-  nzb_max_download: 0,
-  http_max_download: 0,
-  ftp_max_download: 0,
-  emule_enabled: false,
-  unzip_service_enabled: false,
-  default_destination: '',
-  emule_default_destination: '',
-};
-
 export interface SynologyDownloadStationInfo {
   /** Build number of Download Station 1 and later */
   version: number;

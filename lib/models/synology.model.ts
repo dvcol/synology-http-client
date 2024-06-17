@@ -1,7 +1,3 @@
-import type { HttpBody } from '~/models/http-body.model';
-import type { HttpMethod } from '~/models/http-method.model';
-import type { HttpParameters } from '~/models/http-parameters.model';
-
 export enum SessionName {
   SynologyHttpClient = 'SynologyHttpClient',
   DownloadStation = 'DownloadStation',
@@ -225,15 +221,3 @@ export enum Order {
   ASC = 'ASC',
   DESC = 'DESC',
 }
-
-export type SynologySynologyQueryOptions = {
-  api: Api;
-  endpoint: Endpoint;
-  method: HttpMethod;
-  version: string;
-  params?: HttpParameters;
-  body?: HttpBody;
-  base?: string;
-};
-
-export type SynologyQueryArgs = [SynologySynologyQueryOptions];

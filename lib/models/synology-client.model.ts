@@ -10,8 +10,8 @@ import type {
   ResponseOrTypedResponse,
 } from '@dvcol/base-http-client';
 import type { RecursiveRecord } from '@dvcol/common-utils/common/models';
-import type { HttpError } from '~/models/http-response.model';
 
+import type { HttpError } from '~/models/synology-error.model';
 import type { Api, SynologyMethod, Version } from '~/models/synology.model';
 
 import { Controller } from '~/models/synology.model';
@@ -35,7 +35,7 @@ export type SynologyClientAuthentication = {
   token?: string;
 };
 
-export type SynologyApiParam = SynologyRequest<RecursiveRecord>;
+export type SynologyApiParam = SynologyRequest & RecursiveRecord;
 
 type BaseSynologyRequest = {
   /** The endpoint api path */
@@ -52,9 +52,9 @@ export type SynologyRequest<T extends RecursiveRecord = Record<string, never>> =
   T extends Record<string, never> ? BaseSynologyRequest : BaseSynologyRequest & T;
 
 export type SynologyPaginationRequest<T = Record<string, never>> = T & {
-  /** Specify how many shared folders are skipped before beginning to return listed shared folders. Defaults to 0. */
+  /** Specify how many entities are skipped before beginning to return listed entities. */
   offset?: number;
-  /** Number of shared folders requested. 0 lists all shared folders. Defaults to 0. */
+  /** Number of shared entities requested. */
   limit?: number;
 };
 

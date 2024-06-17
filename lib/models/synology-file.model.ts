@@ -2,6 +2,12 @@ import type { SynologyPaginationRequest } from '~/models/synology-client.model';
 
 import type { FolderAcl, FolderOwner, FolderTime } from '~/models/synology-folder.model';
 
+/**
+ * Note: When setting a limit, 0 lists all files.
+ * Defaults to 0.
+ *
+ * @link [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Package/FileStation/All/enu/Synology_File_Station_API_Guide.pdf}
+ */
 export type SynologyListFileRequest = SynologyPaginationRequest<{
   /** A listed folder path starting with a shared folder */
   folder_path: string;

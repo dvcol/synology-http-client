@@ -1,6 +1,12 @@
 import type { SynologyPaginationRequest } from '~/models/synology-client.model';
 import type { File, FileListOption } from '~/models/synology-file.model';
 
+/**
+ * Note: When setting a limit, 0 lists all shared folders.
+ * Defaults to 0.
+ *
+ * @link [documentation]{@link https://global.download.synology.com/download/Document/Software/DeveloperGuide/Package/FileStation/All/enu/Synology_File_Station_API_Guide.pdf}
+ */
 export type SynologyListFolderRequest = SynologyPaginationRequest<{
   /**
    * - true : List writable shared folders.

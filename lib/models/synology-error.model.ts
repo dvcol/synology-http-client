@@ -1,7 +1,11 @@
 import { ErrorMap } from './synology.model';
 
-import type { HttpError } from './http-response.model';
 import type { Api } from './synology.model';
+
+export interface HttpError {
+  code: number;
+  errors?: any[];
+}
 
 export enum ErrorType {
   Synology = 'synology',

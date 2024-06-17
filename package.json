@@ -44,6 +44,41 @@
       "require": "./dist/utils/index.cjs",
       "import": "./dist/utils/index.js",
       "types": "./dist/utils/index.d.ts"
+    },
+    "./api": {
+      "require": "./dist/api/synology-api.endpoints.cjs",
+      "import": "./dist/api/synology-api.endpoints.js",
+      "types": "./dist/api/synology-api.endpoints.d.ts"
+    },
+    "./api/minimal": {
+      "require": "./dist/api/synology-api-minimal.endpoints.cjs",
+      "import": "./dist/api/synology-api-minimal.endpoints.js",
+      "types": "./dist/api/synology-api-minimal.endpoints.d.ts"
+    },
+    "./api/authentication": {
+      "require": "./dist/api/endpoints/authentication.endpoint.cjs",
+      "import": "./dist/api/endpoints/authentication.endpoint.js",
+      "types": "./dist/api/endpoints/authentication.endpoint.d.ts"
+    },
+    "./api/download": {
+      "require": "./dist/api/endpoints/download.endpoint.cjs",
+      "import": "./dist/api/endpoints/download.endpoint.js",
+      "types": "./dist/api/endpoints/download.endpoint.d.ts"
+    },
+    "./api/download2": {
+      "require": "./dist/api/endpoints/download2.endpoint.cjs",
+      "import": "./dist/api/endpoints/download2.endpoint.js",
+      "types": "./dist/api/endpoints/download2.endpoint.d.ts"
+    },
+    "./api/file": {
+      "require": "./dist/api/endpoints/file.endpoint.cjs",
+      "import": "./dist/api/endpoints/file.endpoint.js",
+      "types": "./dist/api/endpoints/file.endpoint.d.ts"
+    },
+    "./api/information": {
+      "require": "./dist/api/endpoints/information.endpoint.cjs",
+      "import": "./dist/api/endpoints/information.endpoint.js",
+      "types": "./dist/api/endpoints/information.endpoint.d.ts"
     }
   },
   "files": [
@@ -69,8 +104,7 @@
   "dependencies": {
     "@dvcol/base-http-client": "^1.8.1",
     "@dvcol/common-utils": "^1.2.2",
-    "pretty-bytes": "^6.1.1",
-    "rxjs": "^7.8.1"
+    "pretty-bytes": "^6.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
