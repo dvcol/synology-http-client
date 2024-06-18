@@ -1,4 +1,5 @@
-import type { SynologyLoginRequest } from '~/models';
+import type { SynologyLoginRequest, SynologyRequest } from '~/models';
+
 import type { ISynologyApi, SynologyClientAuthentication, SynologyClientOptions } from '~/models/synology-client.model';
 
 import { minimalSynologyApi } from '~/api/synology-api-minimal.endpoint';
@@ -19,7 +20,7 @@ export class SynologyClient extends BaseSynologyClient {
    * @param api - The API endpoints for the client.
    */
   constructor(settings: SynologyClientOptions, authentication: SynologyClientAuthentication = {}, api: ISynologyApi = minimalSynologyApi) {
-    super(settings, authentication, api);
+    super({ ...settings, sid: true, token: true }, authentication, api);
   }
 
   setBaseUrl(baseUrl: string) {
@@ -30,7 +31,7 @@ export class SynologyClient extends BaseSynologyClient {
     this.updateAuth(auth);
   }
 
-  async login(request: SynologyLoginRequest) {
+  async login(request: SynologyRequest<SynologyLoginRequest>) {
     const response = await this.authentication.login(request);
     const body = await response.json();
 

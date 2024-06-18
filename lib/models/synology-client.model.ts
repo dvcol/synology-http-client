@@ -20,9 +20,9 @@ export type SynologyClientSettings = BaseSettings<{
   /** The client name */
   name: string;
   /** To inject session id (_sid) in query or body */
-  sid: boolean;
+  sid?: boolean;
   /** To inject csrd token (SynoToken) in query or body */
-  token: boolean;
+  token?: boolean;
 }>;
 
 /**
@@ -41,7 +41,7 @@ type BaseSynologyRequest = {
   /** The endpoint api path */
   api?: Api;
   /** The api version */
-  version?: Version;
+  version?: Version | number;
   /** The api method */
   method?: SynologyMethod;
   /** The server origin if it differs from the default */

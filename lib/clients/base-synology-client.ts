@@ -1,4 +1,4 @@
-import { BaseApiHeaders, BaseClient, BaseHeaderContentType, injectCorsProxyPrefix, parseBody, parseUrl } from '@dvcol/base-http-client';
+import { BaseApiHeaders, BaseClient, BaseHeaderContentType, injectCorsProxyPrefix, parseBodyUrlEncoded, parseUrl } from '@dvcol/base-http-client';
 
 import { HttpMethod } from '@dvcol/common-utils';
 
@@ -69,7 +69,8 @@ export class BaseSynologyClient
     params: T,
     init?: BaseInit,
   ): BaseTransformed<T> {
-    if (params?.method !== AuthMethod.login) {
+    console.info('pre transform params', structuredClone(params));
+    if (template?.seed?.method !== AuthMethod.login) {
       if (this.settings.sid && this.auth.sid) {
         params._sid = this.auth.sid;
         if ([HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].map(String).includes(template.method)) {
@@ -98,6 +99,7 @@ export class BaseSynologyClient
     if (!params?.api) params.api = template.api;
     if (!params?.version) params.version = template.version;
 
+    console.info('post transform params', structuredClone(params));
     return { template, params, init };
   }
 
@@ -114,10 +116,9 @@ export class BaseSynologyClient
    */
   // eslint-disable-next-line class-methods-use-this -- implemented from abstract class
   protected _parseHeaders<T extends SynologyApiParam = SynologyApiParam>(template: SynologyApiTemplate<T>): HeadersInit {
-    const headers: HeadersInit = {
-      [BaseApiHeaders.Accept]: BaseHeaderContentType.Json,
-      [BaseApiHeaders.ContentType]: template.body ? BaseHeaderContentType.FormUrlEncoded : BaseHeaderContentType.Json,
-    };
+    const headers: HeadersInit = { 'Access-Control-Allow-Origin': '*' };
+
+    if (template.body) headers[BaseApiHeaders.ContentType] = BaseHeaderContentType.FormUrlEncoded;
 
     if (this.settings.name) headers[CustomHeader.ClientName] = this.settings.name;
 
@@ -157,7 +158,7 @@ export class BaseSynologyClient
    */
   // eslint-disable-next-line class-methods-use-this -- implemented from abstract class
   protected _parseBody<T extends SynologyApiParam = SynologyApiParam>(template: BaseBody<string | keyof T>, params: T): BodyInit {
-    return parseBody(template, params);
+    return parseBodyUrlEncoded(template, params);
   }
 
   /**
