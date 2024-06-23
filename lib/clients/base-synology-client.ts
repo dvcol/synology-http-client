@@ -1,8 +1,8 @@
-import { BaseApiHeaders, BaseClient, BaseHeaderContentType, injectCorsProxyPrefix, parseBodyUrlEncoded, parseUrl } from '@dvcol/base-http-client';
+import { BaseApiHeaders, BaseClient, BaseHeaderContentType, injectCorsProxyPrefix, parseUrl } from '@dvcol/base-http-client';
 
 import { HttpMethod } from '@dvcol/common-utils';
 
-import type { BaseBody, BaseInit, BaseRequest, BaseTransformed } from '@dvcol/base-http-client';
+import type { BaseInit, BaseRequest, BaseTransformed } from '@dvcol/base-http-client';
 
 import type { SynologyApi } from '~/api/synology-api.endpoints';
 
@@ -142,23 +142,6 @@ export class BaseSynologyClient
   protected _parseUrl<T extends SynologyApiParam = SynologyApiParam>(template: SynologyApiTemplate<T>, params: T): URL {
     injectCorsProxyPrefix(template, this.settings);
     return parseUrl(template, params, params?.baseUrl ?? this.settings.endpoint);
-  }
-
-  /**
-   * Parses body from a template and stringifies a {@link BodyInit}
-   *
-   * @protected
-   *
-   * @template T - The type of the parameters.
-   *
-   * @param template - The expected body structure.
-   * @param {T} params - The actual parameters.
-   *
-   * @returns {BodyInit} The parsed request body.
-   */
-  // eslint-disable-next-line class-methods-use-this -- implemented from abstract class
-  protected _parseBody<T extends SynologyApiParam = SynologyApiParam>(template: BaseBody<string | keyof T>, params: T): BodyInit {
-    return parseBodyUrlEncoded(template, params);
   }
 
   /**
