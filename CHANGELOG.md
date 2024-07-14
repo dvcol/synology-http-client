@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/dvcol/synology-http-client/compare/v1.1.0...v1.1.1) (2024-07-14)
+
+
+### Bug Fixes
+
+* **parse:** parse cloned responses too to fix caching ([35c84e3](https://github.com/dvcol/synology-http-client/commit/35c84e362521f31dbe9f9d9f65ba058d370df99d))
+
 ## 1.1.0 (2024-06-23)
 
 
