@@ -10,7 +10,6 @@ import type {
   ISynologyApi,
   SynologyApiParam,
   SynologyApiQuery,
-  SynologyApiRawResponse,
   SynologyApiResolvedPayload,
   SynologyApiResponse,
   SynologyApiTemplate,
@@ -29,6 +28,26 @@ import { CustomHeader } from '~/utils/endpoint.utils';
 /** Needed to type Object assignment */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging  -- To allow type extension
 export interface BaseSynologyClient extends SynologyApi {}
+
+const parseResponse = (result: SynologyApiResolvedPayload, template: SynologyApiTemplate) => {
+  if (isSynologyApiErrorPayload(result)) {
+    throw new SynologyError(template.api, result?.error);
+  }
+  if (result?.success === true) {
+    return result.data;
+  }
+  return result;
+};
+
+const patchResponse = <T extends Response>(response: T, template: SynologyApiTemplate): T => {
+  const parsed: T = response;
+  const _json = parsed.json as T['json'];
+  parsed.json = async () =>
+    _json
+      .bind(parsed)()
+      .then((result: SynologyApiResolvedPayload) => parseResponse(result, template));
+  return parsed;
+};
 
 /**
  * Represents a Synology API client with common functionality.
@@ -161,19 +180,9 @@ export class BaseSynologyClient
   ): SynologyApiResponse {
     if (!response.ok || response.status >= 400) throw response;
 
-    const parsed: SynologyApiResponse = response;
-    const _oldJson = parsed.json as SynologyApiRawResponse['json'];
-    const _newJson = async () => {
-      const result: SynologyApiResolvedPayload = await _oldJson.bind(parsed)();
-      if (isSynologyApiErrorPayload(result)) {
-        throw new SynologyError(template.api, result?.error);
-      }
-      if (result?.success === true) {
-        return result.data;
-      }
-      return result;
-    };
-    parsed.json = _newJson as SynologyApiResponse['json'];
+    const parsed: SynologyApiResponse = patchResponse(response, template);
+    const _clone = parsed.clone;
+    parsed.clone = () => patchResponse(_clone.bind(parsed)(), template);
     return response;
   }
 }
