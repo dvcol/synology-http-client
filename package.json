@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.1.1",
   "packageManager": "pnpm@9.4.0",
-  "description": "Simple fetch based http client for the Synology API",
+  "description": "Simple fetch based http client for Synology API with full typescript support (request and response).",
   "homepage": "https://github.com/dvcol/synology-http-client",
   "bugs": "https://github.com/dvcol/synology-http-client/issues",
   "keywords": [
