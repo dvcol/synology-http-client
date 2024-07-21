@@ -1,7 +1,7 @@
 {
   "name": "@dvcol/synology-http-client",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "packageManager": "pnpm@9.4.0",
   "description": "Simple fetch based http client for Synology API with full typescript support (request and response).",
   "homepage": "https://github.com/dvcol/synology-http-client",
