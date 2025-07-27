@@ -114,3 +114,23 @@ export interface FilePermission {
   is_acl_mode: boolean;
   acl?: FolderAcl;
 }
+
+export interface SynologyFileStationInfo {
+  enable_list_usergrp: boolean;
+  enable_send_email_attachment: boolean;
+  enable_view_google: boolean;
+  enable_view_microsoft: boolean;
+  hostname: string;
+  is_manager: boolean;
+  items: { gid: number }[];
+  support_file_request: boolean;
+  support_sharing: boolean;
+  support_vfs: boolean;
+  support_virtual: {
+    enable_iso_mount: boolean;
+    enable_remote_mount: boolean;
+  };
+  support_virtual_protocol: string[];
+  system_codepage: string;
+  uid: number;
+}

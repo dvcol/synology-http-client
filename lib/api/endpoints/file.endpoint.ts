@@ -1,6 +1,6 @@
 import { HttpMethod } from '@dvcol/common-utils';
 
-import type { SynologyListFileRequest } from '~/models/synology-file.model';
+import type { SynologyFileStationInfo, SynologyListFileRequest } from '~/models/synology-file.model';
 import type {
   FolderList,
   NewFolderList,
@@ -123,4 +123,15 @@ export const file = {
       },
     }),
   },
+  info: new SynologyClientEndpoint<SynologyRequest, SynologyFileStationInfo>({
+    controller: Controller.Common,
+    api: FileStationAPI.Info,
+    url: Endpoint.Entry,
+    version: Version.v1,
+    method: HttpMethod.POST,
+    body: baseBodyValidation,
+    seed: {
+      method: FileMethod.get,
+    },
+  }),
 };

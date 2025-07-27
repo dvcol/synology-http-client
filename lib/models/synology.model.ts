@@ -121,6 +121,7 @@ export enum Task2Method {
 }
 
 export enum FileMethod {
+  get = 'get',
   list = 'list',
   listShare = 'list_share',
   create = 'create',
