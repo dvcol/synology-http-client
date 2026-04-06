@@ -32,6 +32,7 @@ export const authentication = {
 
       otp_code: false,
       enable_device_token: false,
+      enable_syno_token: false,
       device_name: false,
       device_id: false,
 

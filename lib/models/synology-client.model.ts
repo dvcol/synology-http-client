@@ -19,10 +19,10 @@ import { Controller } from '~/models/synology.model';
 export type SynologyClientSettings = BaseSettings<{
   /** The client name */
   name: string;
-  /** To inject session id (_sid) in query or body */
+  /** To inject session id (_sid) in query parameters */
   sid?: boolean;
-  /** To inject csrd token (SynoToken) in query or body */
-  token?: boolean;
+  /** To inject csrd token (SynoToken) in query parameters or header */
+  token?: 'header' | 'params' | false;
 }>;
 
 /**

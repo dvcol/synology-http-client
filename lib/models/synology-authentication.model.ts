@@ -4,6 +4,7 @@ export type SynologyLoginRequest = {
   baseUrl?: string;
   otp_code?: string;
   enable_device_token?: 'yes' | 'no';
+  enable_syno_token?: 'yes' | 'no';
   device_name?: string;
   device_id?: string;
 

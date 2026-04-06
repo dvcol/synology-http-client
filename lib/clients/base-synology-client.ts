@@ -1,7 +1,5 @@
 import { BaseApiHeaders, BaseClient, BaseHeaderContentType, injectCorsProxyPrefix, parseUrl } from '@dvcol/base-http-client';
 
-import { HttpMethod } from '@dvcol/common-utils';
-
 import type { BaseInit, BaseRequest, BaseTransformed } from '@dvcol/base-http-client';
 
 import type { SynologyApi } from '~/api/synology-api.endpoints';
@@ -92,26 +90,18 @@ export class BaseSynologyClient
     if (template?.seed?.method !== AuthMethod.login) {
       if (this.settings.sid && this.auth.sid) {
         params._sid = this.auth.sid;
-        if ([HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].map(String).includes(template.method)) {
-          template.body = { ...template.body, _sid: true };
-        } else {
-          template.opts = {
-            ...template.opts,
-            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, _sid: true } },
-          };
-        }
+        template.opts = {
+          ...template.opts,
+          parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, _sid: true } },
+        };
       }
 
-      if (this.settings.token && this.auth.token) {
+      if (this.settings.token === 'params' && this.auth.token) {
         params.SynoToken = this.auth.token;
-        if ([HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].map(String).includes(template.method)) {
-          template.body = { ...template.body, SynoToken: true };
-        } else {
-          template.opts = {
-            ...template.opts,
-            parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, SynoToken: true } },
-          };
-        }
+        template.opts = {
+          ...template.opts,
+          parameters: { ...template.opts?.parameters, query: { ...template.opts?.parameters?.query, SynoToken: true } },
+        };
       }
     }
 
@@ -140,6 +130,7 @@ export class BaseSynologyClient
     if (template.body) headers[BaseApiHeaders.ContentType] = BaseHeaderContentType.FormUrlEncoded;
 
     if (this.settings.name) headers[CustomHeader.ClientName] = this.settings.name;
+    if (this.settings.token === 'header') headers[CustomHeader.SynoToken] = this.auth.token;
 
     return headers;
   }

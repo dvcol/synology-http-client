@@ -14,4 +14,5 @@ export const basePaginationValidation: Record<keyof SynologyPaginationRequest, b
 
 export enum CustomHeader {
   ClientName = 'client-name',
+  SynoToken = 'X-SYNO-TOKEN',
 }
